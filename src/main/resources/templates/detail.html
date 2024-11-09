@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <head>
+        <!-- Enlace a Font Awesome desde el CDN -->
+        <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css}" rel="stylesheet">
+    </head>
+
+</head>
+<body>
+<!--NavBar -->
+<header th:replace="~{fragmentos/navbar :: nav_bar}"></header>
+
+<div class="container px-4 py-5">
+    <div class="d-flex justify-content-end align-items-end">
+        <!--Botón -->
+        <a type="button" class="btn btn-outline-primary" th:href="@{/coctel/list}" >Regresar</a>
+    </div>
+    <div class="text-center">
+        <!-- Título del cóctel -->
+        <h1 class="mt-2" th:text="${coctel.strDrink}">Nombre del Cóctel</h1>
+        <!-- Imagen del cóctel -->
+        <div class="mt-4">
+            <img th:src="${coctel.strDrinkThumb}" alt="Imagen del cóctel" class="img-fluid rounded" style="width: 50%; max-width: 200px;">
+        </div>
+    </div>
+
+    <!-- Información adicional (categoría y tipo de bebida) -->
+    <div class="text-center mt-3">
+        <p th:if="${coctel.strCategory != null || coctel.strAlcoholic != null || coctel.strGlass != null}">
+            <strong th:if="${coctel.strCategory != null}" th:text="${coctel.strCategory}">Categoría</strong>
+            <strong th:if="${coctel.strAlcoholic != null}"> - <span th:text="${coctel.strAlcoholic}">Tipo</span></strong>
+            <strong th:if="${coctel.strGlass != null}"> - <span th:text="${coctel.strGlass}">Vaso</span></strong>
+        </p>
+    </div>
+
+    <!-- Instrucciones en inglés -->
+    <div class="mt-4">
+        <h3>Instructions in English</h3>
+        <p th:text="${coctel.strInstructions}">Aquí van las instrucciones de preparación.</p>
+    </div>
+
+    <!-- Instrucciones en español -->
+    <div class="mt-4">
+        <h3>Instructions in Spanish</h3>
+        <p th:text="${coctel.strInstructionsES}">Aquí van las instrucciones de preparación.</p>
+    </div>
+
+    <!-- Ingredientes -->
+    <div class="mt-4">
+        <h3>Ingredientes</h3>
+        <ul>
+            <li th:each="ingredient, iterStat : ${coctel.ingredients}"
+                th:if="${ingredient != null && ingredient != ''}"
+                th:text="${ingredient} + ' - ' + (${coctel.measures.size() > iterStat.index ? coctel.measures[iterStat.index] : ''})">
+                Ingrediente - Medida
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
