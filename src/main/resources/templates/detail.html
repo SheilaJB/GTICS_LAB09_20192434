@@ -23,6 +23,13 @@
     <div class="text-center">
         <!-- Título del cóctel -->
         <h1 class="mt-2" th:text="${coctel.strDrink}">Nombre del Cóctel</h1>
+        <!-- Botón de favoritos con ícono de estrella -->
+        <form th:action="@{/favorite/{id}(id=${coctel.idDrink})}" method="post" id="favorite-form">
+            <button type="submit" id="favorite-button" class="btn btn-outline-warning mt-2">
+                <i id="favorite-icon" class="fa fa-star"></i> Add to favorites
+            </button>
+        </form>
+
         <!-- Imagen del cóctel -->
         <div class="mt-4">
             <img th:src="${coctel.strDrinkThumb}" alt="Imagen del cóctel" class="img-fluid rounded" style="width: 50%; max-width: 200px;">
@@ -65,5 +72,24 @@
 </div>
 
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script>
+    // Función para alternar el estado del botón de favoritos
+    function toggleFavorite() {
+        var icon = document.getElementById("favorite-icon");
+        var button = document.getElementById("favorite-button");
+
+        if (icon.classList.contains("fa-star")) {
+            icon.classList.remove("fa-star");
+            icon.classList.add("fa-check");
+            button.classList.remove("btn-outline-warning");
+            button.classList.add("btn-success");
+        } else {
+            icon.classList.remove("fa-check");
+            icon.classList.add("fa-star");
+            button.classList.remove("btn-success");
+            button.classList.add("btn-outline-warning");
+        }
+    }
+</script>
 </body>
 </html>
