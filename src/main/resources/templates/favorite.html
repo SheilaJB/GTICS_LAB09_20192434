@@ -24,6 +24,9 @@
           <div class="alert alert-info text-center">
             <p>No se ha añadido cócteles a la lista por el momento</p>
           </div>
+          <div class="text-center">
+            <a th:href="@{/coctel/list}" type="button"  class="btn btn-outline-primary mt-2">Ir al catálogo</a>
+          </div>
         </div>
         <div class="col-md-4 mb-4" th:if="${cocteles != null}" th:each="coctel : ${cocteles}">
           <div class="card h-100" >

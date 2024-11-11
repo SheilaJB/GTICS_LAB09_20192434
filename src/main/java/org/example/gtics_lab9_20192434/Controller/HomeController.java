@@ -3,7 +3,7 @@ package org.example.gtics_lab9_20192434.Controller;
 import org.example.gtics_lab9_20192434.Daos.CoctelDao;
 import org.example.gtics_lab9_20192434.Entity.Coctel;
 import org.example.gtics_lab9_20192434.Entity.Favoritecoctel;
-//import org.example.gtics_lab9_20192434.Repository.FavoritecoctelRepository;
+import org.example.gtics_lab9_20192434.Repository.FavoritecoctelRepository;
 import org.example.gtics_lab9_20192434.Response.CoctelResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,14 +15,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/coctel")
 public class HomeController {
 
+    private final FavoritecoctelRepository favoritecoctelRepository;
     @Autowired
     private CoctelDao coctelDao;
-  //  @Autowired
-  //  private FavoritecoctelRepository favoriteCoctelRepository;
+   // @Autowired
+    public HomeController(FavoritecoctelRepository favoritecoctelRepository) {
+        this.favoritecoctelRepository = favoritecoctelRepository;
+    }
+    //@Autowired
 
 
     //Listamos los primeros 16 cocteles de la lista
@@ -62,7 +68,7 @@ public class HomeController {
             favoriteCoctel.setStrDrinkThumb(coctel.getStrDrinkThumb());
             favoriteCoctel.setFavorite(Boolean.parseBoolean("1"));
 
-           // favoriteCoctelRepository.save(favoriteCoctel);
+            favoritecoctelRepository.save(favoriteCoctel);
             attr.addFlashAttribute("messageOk", "Favorite Cocktail saved successfully!");
             return "redirect:/coctel/detail/" + id;
         } else {
@@ -70,4 +76,20 @@ public class HomeController {
             return "redirect:/coctel/detail/" + id;
         }
     }
+
+    //Lista de favoritos
+    @GetMapping("/listFavorite")
+    public String listarCoctelesFavoritos(Model model) {
+        //Listamos
+        List<Favoritecoctel> lista = favoritecoctelRepository.findAll();
+        if (lista.isEmpty()) {
+            model.addAttribute("cocteles", lista);
+
+        }else {
+            model.addAttribute("cocteles", lista);
+        }
+
+        return "favorite";
+    }
+
 }
