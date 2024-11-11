@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css}" rel="stylesheet">
+
+</head>
+<body>
+<!--NavBar -->
+<header th:replace="~{fragmentos/navbar :: nav_bar}"></header>
+
+<div class="container px-4 py-5">
+
+    <!-- Alerts-->
+    <div th:if="${messageOk}" class="alert alert-success alert-dismissible fade show" role="alert" id="flash-message1">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <span th:text="${messageOk}"></span>
+    </div>
+    <div th:if="${messageFail}" class="alert alert-danger alert-dismissible fade show" role="alert" id="flash-message2">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <span th:text="${messageFail}"></span>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-end">
+        <!--Botón -->
+        <a type="button" class="btn btn-outline-primary" th:href="@{/coctel/list}" >Regresar</a>
+    </div>
+    <div class="text-center">
+        <!-- Título del cóctel -->
+        <h1 class="mt-2" th:text="${coctel.strDrink}">Nombre del Cóctel</h1>
+
+
+
+
+
+        <!-- Botón de favoritos con ícono de estrella -->
+        <form th:action="@{/coctel/favorite/{id}(id=${coctel.idDrink})}" method="post" id="favorite-form">
+            <button type="submit" id="favorite-button" class="btn btn-outline-warning mt-2">
+                <i id="favorite-icon" class="fa fa-star"></i> Add to favorites
+            </button>
+        </form>
+
+        <!-- Imagen del cóctel -->
+        <div class="mt-4">
+            <img th:src="${coctel.strDrinkThumb}" alt="Imagen del cóctel" class="img-fluid rounded" style="width: 50%; max-width: 200px;">
+        </div>
+    </div>
+
+    <!-- Información adicional (categoría y tipo de bebida) -->
+    <div class="text-center mt-3">
+        <p th:if="${coctel.strCategory != null || coctel.strAlcoholic != null || coctel.strGlass != null}">
+            <strong th:if="${coctel.strCategory != null}" th:text="${coctel.strCategory}">Categoría</strong>
+            <strong th:if="${coctel.strAlcoholic != null}"> - <span th:text="${coctel.strAlcoholic}">Tipo</span></strong>
+            <strong th:if="${coctel.strGlass != null}"> - <span th:text="${coctel.strGlass}">Vaso</span></strong>
+        </p>
+    </div>
+
+    <!-- Instrucciones en inglés -->
+    <div class="mt-4">
+        <h3>Instructions in English</h3>
+        <p th:text="${coctel.strInstructions}">Aquí van las instrucciones de preparación.</p>
+    </div>
+
+    <!-- Instrucciones en español -->
+    <div class="mt-4">
+        <h3>Instructions in Spanish</h3>
+        <p th:text="${coctel.strInstructionsES}">Aquí van las instrucciones de preparación.</p>
+    </div>
+
+    <!-- Ingredientes -->
+    <div class="mt-4">
+        <h3>Ingredientes</h3>
+        <ul>
+            <li th:each="ingredient, iterStat : ${coctel.ingredients}"
+                th:if="${ingredient != null && ingredient != ''}"
+                th:text="${ingredient} + ' - ' + (${coctel.measures.size() > iterStat.index ? coctel.measures[iterStat.index] : ''})">
+                Ingrediente - Medida
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script>
+    // Función para alternar el estado del botón de favoritos
+    function toggleFavorite() {
+        var icon = document.getElementById("favorite-icon");
+        var button = document.getElementById("favorite-button");
+
+        if (icon.classList.contains("fa-star")) {
+            icon.classList.remove("fa-star");
+            icon.classList.add("fa-check");
+            button.classList.remove("btn-outline-warning");
+            button.classList.add("btn-success");
+        } else {
+            icon.classList.remove("fa-check");
+            icon.classList.add("fa-star");
+            button.classList.remove("btn-success");
+            button.classList.add("btn-outline-warning");
+        }
+    }
+</script>
+</body>
+</html>
