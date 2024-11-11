@@ -1,18 +1,16 @@
 package org.example.gtics_lab9_20192434.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "favoriteCoctel")
-public class FavoriteCoctel {
+public class Favoritecoctel {
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
 
     @Column(name = "idDrink", nullable = false, length = 50)
@@ -23,6 +21,7 @@ public class FavoriteCoctel {
 
     @Column(name = "strDrinkThumb", length = 255)
     private String strDrinkThumb;
+
     @Column(name = "isFavorite")
     private boolean isFavorite;
 }

@@ -2,8 +2,8 @@ package org.example.gtics_lab9_20192434.Controller;
 
 import org.example.gtics_lab9_20192434.Daos.CoctelDao;
 import org.example.gtics_lab9_20192434.Entity.Coctel;
-import org.example.gtics_lab9_20192434.Entity.FavoriteCoctel;
-import org.example.gtics_lab9_20192434.Reposiroty.FavoriteCoctelRepository;
+import org.example.gtics_lab9_20192434.Entity.Favoritecoctel;
+//import org.example.gtics_lab9_20192434.Repository.FavoritecoctelRepository;
 import org.example.gtics_lab9_20192434.Response.CoctelResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/coctel")
@@ -20,12 +21,9 @@ public class HomeController {
 
     @Autowired
     private CoctelDao coctelDao;
+  //  @Autowired
+  //  private FavoritecoctelRepository favoriteCoctelRepository;
 
-    private final FavoriteCoctelRepository favoriteCoctelRepository;
-
-    public HomeController(FavoriteCoctelRepository favoriteCoctelRepository) {
-        this.favoriteCoctelRepository = favoriteCoctelRepository;
-    }
 
     //Listamos los primeros 16 cocteles de la lista
     @GetMapping("/list")
@@ -45,7 +43,7 @@ public class HomeController {
 
     //Guardar Favorite
     @PostMapping("/favorite/{id}")
-    public String agregarAFavoritos(@PathVariable("id") String id) {
+    public String agregarAFavoritos(@PathVariable("id") String id, RedirectAttributes attr) {
         // URL del servicio externo para obtener detalles del cóctel
         String url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=" + id;
 
@@ -58,17 +56,18 @@ public class HomeController {
             Coctel coctel = response.getDrinks().get(0);
 
             // Crea y guarda la entidad FavoriteCoctel con los detalles obtenidos
-            FavoriteCoctel favoriteCoctel = new FavoriteCoctel();
+            Favoritecoctel favoriteCoctel = new Favoritecoctel();
             favoriteCoctel.setIdDrink(coctel.getIdDrink());
             favoriteCoctel.setStrDrink(coctel.getStrDrink());
             favoriteCoctel.setStrDrinkThumb(coctel.getStrDrinkThumb());
             favoriteCoctel.setFavorite(Boolean.parseBoolean("1"));
 
-            favoriteCoctelRepository.save(favoriteCoctel);
-            return "redirect:/coctel/list";
+           // favoriteCoctelRepository.save(favoriteCoctel);
+            attr.addFlashAttribute("messageOk", "Favorite Cocktail saved successfully!");
+            return "redirect:/coctel/detail/" + id;
         } else {
-            return "redirect:/coctel/detail/{id}";
+            attr.addFlashAttribute("messageFail", "This drink is already in your favorites.");
+            return "redirect:/coctel/detail/" + id;
         }
     }
-
 }

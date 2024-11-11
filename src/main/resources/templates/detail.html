@@ -5,10 +5,7 @@
     <title>Detalles</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
-    <head>
-        <!-- Enlace a Font Awesome desde el CDN -->
-        <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css}" rel="stylesheet">
-    </head>
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css}" rel="stylesheet">
 
 </head>
 <body>
@@ -16,6 +13,17 @@
 <header th:replace="~{fragmentos/navbar :: nav_bar}"></header>
 
 <div class="container px-4 py-5">
+
+    <!-- Alerts-->
+    <div th:if="${messageOk}" class="alert alert-success alert-dismissible fade show" role="alert" id="flash-message1">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <span th:text="${messageOk}"></span>
+    </div>
+    <div th:if="${messageFail}" class="alert alert-danger alert-dismissible fade show" role="alert" id="flash-message2">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <span th:text="${messageFail}"></span>
+    </div>
+
     <div class="d-flex justify-content-end align-items-end">
         <!--Botón -->
         <a type="button" class="btn btn-outline-primary" th:href="@{/coctel/list}" >Regresar</a>
@@ -23,8 +31,13 @@
     <div class="text-center">
         <!-- Título del cóctel -->
         <h1 class="mt-2" th:text="${coctel.strDrink}">Nombre del Cóctel</h1>
+
+
+
+
+
         <!-- Botón de favoritos con ícono de estrella -->
-        <form th:action="@{/favorite/{id}(id=${coctel.idDrink})}" method="post" id="favorite-form">
+        <form th:action="@{/coctel/favorite/{id}(id=${coctel.idDrink})}" method="post" id="favorite-form">
             <button type="submit" id="favorite-button" class="btn btn-outline-warning mt-2">
                 <i id="favorite-icon" class="fa fa-star"></i> Add to favorites
             </button>
