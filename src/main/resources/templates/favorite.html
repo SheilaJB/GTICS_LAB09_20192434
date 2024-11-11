@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Favorites</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<!--NavBar -->
+<header th:replace="~{fragmentos/navbar :: nav_bar}"></header>
+
+
+<div class="main">
+  <div class="container px-4 py-5">
+    <div class="text-center">
+      <h1>Mis Cócteles favoritos</h1>
+    </div>
+
+    <!-- Catálogo -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12" th:if="${cocteles == null}">
+          <div class="alert alert-info text-center">
+            <p>No se ha añadido cócteles a la lista por el momento</p>
+          </div>
+          <div class="text-center">
+            <a th:href="@{/coctel/list}" type="button"  class="btn btn-outline-primary mt-2">Ir al catálogo</a>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4" th:if="${cocteles != null}" th:each="coctel : ${cocteles}">
+          <div class="card h-100" >
+            <a th:href="@{'/coctel/detail/' + ${coctel.idDrink}} ">
+              <img th:src="${coctel.strDrinkThumb}" class="card-img-top" alt="Imagen del coctel">
+            </a>
+            <div class="card-body text-center">
+              <h5 class="card-title" th:text="${coctel.strDrink}">Nombre del coctel</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+</body>
+</html>

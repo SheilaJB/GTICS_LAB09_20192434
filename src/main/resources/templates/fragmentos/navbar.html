@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-  <!-- Enlace a Font Awesome desde el CDN -->
-  <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css}" rel="stylesheet">
-</head>
+
 <body>
 <header th:fragment="nav_bar" id="page-topbar">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -18,7 +15,7 @@
             <a class="nav-link active" th:href="@{/coctel/list}">Catálogo</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" th:href="@{/coctel/list}">Mis Favoritos</a>
+            <a class="nav-link active" th:href="@{/coctel/listFavorite}">Mis Favoritos</a>
           </li>
         </ul>
       </div>
